@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useCallback } from "react";
 import { useState } from "react";
 import ReactDom from "react-dom";
 import Calendar from "./CalendarCard";
@@ -6,7 +6,7 @@ import CircularButton from "./CircularButton";
 
 const MonthArray: string[] = [
   "January",
-  "february",
+  "February",
   "March",
   "April",
   "May",
@@ -37,56 +37,110 @@ const objdate_2: Date = new Date();
 objdate_2.setDate(objdate.getDate() + 1);
 const objdate_3: Date = new Date();
 objdate_3.setDate(objdate.getDate() + 2);
+const objdate_4: Date = new Date();
+objdate_4.setDate(objdate.getDate() + 3);
+const objdate_5: Date = new Date();
+objdate_5.setDate(objdate.getDate() + 4);
+const objdate_6: Date = new Date();
+objdate_6.setDate(objdate.getDate() + 5);
 
 const Carasoul: React.FC = () => {
-  const [date_1, setDate_1] = useState<Date>(objdate);
-  const [date_2, setDate_2] = useState<Date>(objdate_2);
+  const [dates, setDates] = useState<Date[]>([
+    objdate,
+    objdate_2,
+    objdate_3,
+    objdate_4,
+    objdate_5,
+    objdate_6,
+  ]);
 
-  const [date_3, setDate_3] = useState<Date>(objdate_3);
   const [update, setUpdate] = useState<number>(counter);
+  const [touchPosition, setTouchPosition] = useState<any>(null);
 
-  const nextPage = () => {
+  const ref = useRef<any>();
+
+  const updateDatesArray = () => {
     counter++;
-    objdate.setDate(objdate.getDate() + 3);
-    objdate_2.setDate(objdate_2.getDate() + 3);
-    objdate_3.setDate(objdate_3.getDate() + 3);
-    setDate_1(objdate);
-    setDate_2(objdate_2);
-    setDate_3(objdate_3);
-    console.log(objdate);
+    const temp: Date[] = [...dates];
+
+    const date: Date = new Date();
+    date.setDate(dates[dates.length - 3].getDate() + 3);
+    const date_2: Date = new Date();
+    date_2.setDate(dates[dates.length - 2].getDate() + 3);
+    const date_3: Date = new Date();
+    date_3.setDate(dates[dates.length - 1].getDate() + 3);
+
+    temp.push(date);
+    temp.push(date_2);
+    temp.push(date_3);
+    setDates(temp);
     setUpdate(counter);
+    setDates(temp);
+    setUpdate(counter);
+    console.table(dates);
+  };
+
+  const scroll = (value: number) => {
+    ref.current.scrollLeft += value;
+  };
+  const nextPage = () => {
+    scroll(288);
+    updateDatesArray();
   };
 
   const prevPage = () => {
     if (counter > 0) {
       counter--;
-      objdate.setDate(objdate.getDate() - 3);
-      objdate_2.setDate(objdate_2.getDate() - 3);
-      objdate_3.setDate(objdate_3.getDate() - 3);
-      setDate_1(objdate);
-      setDate_2(objdate_2);
-      setDate_3(objdate_3);
-      setUpdate(counter);
+      scroll(-288);
     }
   };
+
+  const handleTouchStart = (e: any) => {
+    const touchDown = e.touches[0].clientX;
+    console.log("BAD tOUCH");
+    setTouchPosition(touchDown);
+  };
+
+  const handleTouchMove = (e: any) => {
+    const touchDown = touchPosition;
+
+    if (touchDown === null) {
+      return;
+    }
+    console.log("BAD tOUCH");
+
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchDown - currentTouch;
+
+    if (diff > 5) {
+      nextPage();
+    }
+
+    if (diff < -5) {
+      prevPage();
+    }
+
+    setTouchPosition(null);
+  };
+
   return (
     <div className="carousal-container">
       <CircularButton text="<" onClick={prevPage} />
-      <Calendar
-        Month={MonthArray[date_1.getMonth()]}
-        Date={date_1.getDate()}
-        Day={DayArray[date_1.getDay()]}
-      />
-      <Calendar
-        Month={MonthArray[date_2.getMonth()]}
-        Date={date_2.getDate()}
-        Day={DayArray[date_2.getDay()]}
-      />
-      <Calendar
-        Month={MonthArray[date_3.getMonth()]}
-        Date={date_3.getDate()}
-        Day={DayArray[date_3.getDay()]}
-      />
+      <div
+        className="limit-cards-3"
+        ref={ref}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+      >
+        {dates.map((date: Date, index: number) => (
+          <Calendar
+            key={index}
+            Month={MonthArray[date.getMonth()]}
+            Date={date.getDate()}
+            Day={DayArray[date.getDay()]}
+          />
+        ))}
+      </div>
       <CircularButton text=">" onClick={nextPage} />
     </div>
   );
