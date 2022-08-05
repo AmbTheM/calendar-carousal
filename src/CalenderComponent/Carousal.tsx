@@ -63,21 +63,23 @@ const Carasoul: React.FC = () => {
     counter++;
     const temp: Date[] = [...dates];
 
-    const date: Date = new Date();
-    date.setDate(dates[dates.length - 3].getDate() + 3);
-    const date_2: Date = new Date();
-    date_2.setDate(dates[dates.length - 2].getDate() + 3);
-    const date_3: Date = new Date();
-    date_3.setDate(dates[dates.length - 1].getDate() + 3);
+    const date: Date = new Date(dates[3].getTime());
+
+    date.setTime(dates[dates.length - 3].getTime() + 259200000);
+
+    const date_2: Date = new Date(dates[4].getTime());
+
+    date_2.setTime(dates[dates.length - 2].getTime() + 259200000);
+
+    const date_3: Date = new Date(dates[5].getTime());
+
+    date_3.setTime(dates[dates.length - 1].getTime() + 259200000);
 
     temp.push(date);
     temp.push(date_2);
     temp.push(date_3);
     setDates(temp);
     setUpdate(counter);
-    setDates(temp);
-    setUpdate(counter);
-    console.table(dates);
   };
 
   const scroll = (value: number) => {
@@ -97,7 +99,6 @@ const Carasoul: React.FC = () => {
 
   const handleTouchStart = (e: any) => {
     const touchDown = e.touches[0].clientX;
-    console.log("BAD tOUCH");
     setTouchPosition(touchDown);
   };
 
@@ -107,7 +108,6 @@ const Carasoul: React.FC = () => {
     if (touchDown === null) {
       return;
     }
-    console.log("BAD tOUCH");
 
     const currentTouch = e.touches[0].clientX;
     const diff = touchDown - currentTouch;
