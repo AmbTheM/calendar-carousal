@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Carasoul from "./CalenderComponent/Carousal";
+import CalendarCarousal from "./CalenderComponent/CalendarCarousal";
 const App: React.FC = () => {
   return (
     <>
-      <Carasoul />
+      <CalendarCarousal />
     </>
   );
 };
