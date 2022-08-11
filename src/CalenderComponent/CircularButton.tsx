@@ -4,11 +4,12 @@ import ReactDom from "react-dom";
 interface Props {
   text: string;
   onClick: () => void;
+  testid: string;
 }
 
-const CircularButton: React.FC<Props> = ({ text, onClick }) => {
+const CircularButton: React.FC<Props> = ({ text, onClick, testid }) => {
   return (
-    <button className="circular-button" onClick={onClick}>
+    <button className="circular-button" onClick={onClick} data-testid={testid}>
       {text}
     </button>
   );

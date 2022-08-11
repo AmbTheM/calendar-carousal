@@ -28,7 +28,7 @@ const Carasoul: React.FC<Props> = ({
 }) => {
   return (
     <div className="carousal-container">
-      <CircularButton text="<" onClick={prevPage} />
+      <CircularButton text="<" onClick={prevPage} testid="button-backward" />
       <div
         className="limit-cards-3"
         ref={innerRef}
@@ -37,6 +37,9 @@ const Carasoul: React.FC<Props> = ({
       >
         {dates.map((date: Date, index: number) => (
           <Calendar
+            datetestid={`date ${index}`}
+            monthtestid={`month ${index}`}
+            daytestid={`day ${index}`}
             key={index}
             Month={MonthArray[date.getMonth()]}
             Date={date.getDate()}
@@ -44,7 +47,7 @@ const Carasoul: React.FC<Props> = ({
           />
         ))}
       </div>
-      <CircularButton text=">" onClick={nextPage} />
+      <CircularButton text=">" onClick={nextPage} testid="button-forward" />
     </div>
   );
 };
