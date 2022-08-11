@@ -28,7 +28,7 @@ const Carasoul: React.FC<Props> = ({
 }) => {
   return (
     <div className="carousal-container">
-      <CircularButton text="<" onClick={prevPage} testid="button-backward" />
+      <CircularButton text="<" onClick={prevPage} />
       <div
         className="limit-cards-3"
         ref={innerRef}

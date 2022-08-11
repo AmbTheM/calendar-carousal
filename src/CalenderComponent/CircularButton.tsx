@@ -4,7 +4,7 @@ import ReactDom from "react-dom";
 interface Props {
   text: string;
   onClick: () => void;
-  testid: string;
+  testid?: string;
 }
 
 const CircularButton: React.FC<Props> = ({ text, onClick, testid }) => {
